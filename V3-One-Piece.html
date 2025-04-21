@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="One Piece Power Exchange - Trade and track power levels of characters from the One Piece universe">
+    <title>One Piece Power Exchange</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="V3-One-Piece.css">
+    <link rel="icon" href="/api/placeholder/32/32" type="image/png">
+</head>
+<body>
+    <div id="particles-js" aria-hidden="true"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen" aria-live="polite">
+        <div class="loading-screen-content">
+            <div class="background-top-half" aria-hidden="true"></div>
+            <div class="background-bottom-half" aria-hidden="true"></div>
+            <div class="intro-message-container" id="welcome-message">Welcome to GrandLine Power Index</div>
+            <div class="loading-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+            <div class="percentage" id="loading-percentage">0%</div>
+        </div>
+    </div>
+
+    <header>
+        <h1>One Piece Power Exchange</h1>
+        <div class="subtitle">Trade the strength of the world's most powerful pirates!</div>
+        <div class="news-ticker" aria-label="News Ticker">
+            <div class="news-ticker-content" id="ticker-content" aria-live="polite">
+                <!-- News items will be populated by JavaScript -->
+            </div>
+        </div>
+    </header>
+
+    <div id="notification-area" aria-live="polite" role="status"></div>
+
+    <div class="container">
+        <nav aria-label="Faction filters">
+            <div class="faction-filters" id="faction-filters">
+                <!-- Faction filters will be populated by JavaScript -->
+            </div>
+        </nav>
+
+        <div class="dashboard">
+            <main class="card" id="market-card">
+                <div class="card-header">
+                    <h2 class="card-title">Grand Line Power Index</h2>
+                    <div class="stats">
+                        <div class="stat" id="market-index" aria-label="Market Total Value">฿ 0.00</div>
+                        <div class="stat" id="market-change" aria-label="Market Change Percentage">-- 0.00%</div>
+                        <div class="stat" id="market-pirates" aria-label="Total Pirates in Market">0 Pirates</div>
+                    </div>
+                </div>
+                <div class="stocks-grid" id="stocks-container" aria-label="Available Character Stocks">
+                    <p id="stocks-loading-msg">Loading market data...</p>
+                </div>
+            </main>
+
+            <aside class="card portfolio">
+                <div class="card-header">
+                    <h2 class="card-title">Your Portfolio</h2>
+                </div>
+                <div class="portfolio-value" id="portfolio-value" aria-label="Portfolio Total Value">฿ 0</div>
+                <div class="portfolio-stats">
+                    <div class="portfolio-stat">
+                        <div class="stat-label">Daily Change</div>
+                        <div class="stat-value" id="portfolio-daily-change" aria-label="Portfolio Daily Change">--%</div>
+                    </div>
+                    <div class="portfolio-stat">
+                        <div class="stat-label">Total Holdings</div>
+                        <div class="stat-value" id="portfolio-total-pirates" aria-label="Total Characters Owned">0</div>
+                    </div>
+                    <div class="portfolio-stat">
+                        <div class="stat-label">Highest Value</div>
+                        <div class="stat-value" id="portfolio-highest-pos" aria-label="Highest Value Position">N/A</div>
+                    </div>
+                    <div class="portfolio-stat">
+                        <div class="stat-label">Best Performer</div>
+                        <div class="stat-value" id="portfolio-best-perf" aria-label="Best Performing Character">N/A</div>
+                    </div>
+                </div>
+                <div class="portfolio-list" id="portfolio-container" aria-label="Your Character Holdings">
+                    <p id="portfolio-loading-msg">No holdings yet.</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 One Piece Power Exchange</p>
+            <div class="exchange-hours">
+                <p>Exchange Hours: 24/7 in the Grand Line</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Templates for dynamic content -->
+    <template id="stock-card-template">
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name"></span>
+                <span class="stock-symbol"></span>
+            </div>
+            <div class="stock-price"></div>
+            <div class="stock-change"></div>
+            <div class="stock-power"></div>
+            <div class="stock-actions">
+                <button class="btn btn-buy"><span class="icon">🛒</span> Buy</button>
+                <button class="btn btn-sell"><span class="icon">💰</span> Sell</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="portfolio-item-template">
+        <div class="portfolio-item">
+            <div class="portfolio-stock">
+                <div class="portfolio-stock-icon"></div>
+                <div class="portfolio-stock-info">
+                    <div class="portfolio-stock-name"></div>
+                    <div class="portfolio-stock-shares"></div>
+                </div>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-faction"></span>
+                <span class="stock-volume"></span>
+            </div>
+            <div class="portfolio-stock-details">
+                <div class="portfolio-stock-value"></div>
+                <div class="portfolio-stock-change"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal for quantity selection when buying/selling -->
+    <div id="quantity-modal" class="modal" aria-modal="true" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close">&times;</span>
+            <h3 id="modal-title">Buy/Sell Character</h3>
+            <div id="modal-character-info"></div>
+            <div class="quantity-selector">
+                <label for="quantity-input">Quantity:</label>
+                <input type="number" id="quantity-input" min="1" value="1">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-cancel">Cancel</button>
+                <button class="btn btn-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
