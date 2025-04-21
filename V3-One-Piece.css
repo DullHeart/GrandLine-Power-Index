@@ -1,3 +1,4 @@
+
 :root {
   --primary: #e63946; /* Red */
   --secondary: #457b9d; /* Blue */
@@ -5,13 +6,31 @@
   --background: #1d3557; /* Dark Blue */
   --card-bg: #2a3f5f; /* Slightly Lighter Dark Blue */
   --text: #f1faee; /* Light Cream */
-  --profit: #2a9d8f; /* Teal */
-  --loss: #e63946; /* Red */
-  --glow: 0 0 15px rgba(244, 162, 97, 0.7); /* Orange Glow */
   --text-light: rgba(241, 250, 238, 0.8); /* Lighter Text */
-  --admiral-yellow-glow: 0 0 15px rgba(255, 235, 59, 0.7); /* Yellow for Kizaru */
-  --admiral-purple-glow: 0 0 15px rgba(173, 112, 230, 0.7); /* Purple for Fujitora */
-  --admiral-green-glow: 0 0 15px rgba(76, 175, 80, 0.7); /* Green for Ryokugyu */
+  --profit: #2a9d8f; /* Teal */
+  --loss: #e63946; /* Red (Same as primary) */
+  --border-color: rgba(244, 162, 97, 0.2); /* Accent with alpha */
+  --border-color-light: rgba(244, 162, 97, 0.1);
+  --border-color-medium: rgba(244, 162, 97, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --shadow-color-dark: rgba(0, 0, 0, 0.3);
+  --shadow-color-header: rgba(0, 0, 0, 0.4);
+
+  /* Glows */
+  --glow-accent: 0 0 15px rgba(244, 162, 97, 0.7);
+  --glow-profit: 0 0 10px rgba(42, 157, 143, 0.5);
+  --glow-loss: 0 0 10px rgba(230, 57, 70, 0.5);
+  --glow-luffy: 0 0 15px rgba(230, 57, 70, 0.7);
+  --glow-zoro: 0 0 15px rgba(42, 157, 143, 0.7);
+  --glow-sanji: var(--glow-accent); /* Same as accent */
+  --glow-kaido: 0 0 15px rgba(69, 123, 157, 0.7);
+  --glow-shanks: 0 0 15px rgba(180, 40, 40, 0.8);
+  --glow-bb: 0 0 15px rgba(50, 50, 50, 0.8);
+  --glow-garp: 0 0 15px rgba(100, 100, 200, 0.7);
+  --glow-dragon: 0 0 15px rgba(200, 50, 50, 0.8);
+  --glow-kizaru: 0 0 15px rgba(255, 235, 59, 0.7);
+  --glow-fujitora: 0 0 15px rgba(173, 112, 230, 0.7);
+  --glow-greenbull: 0 0 15px rgba(76, 175, 80, 0.7);
 }
 
 * {
@@ -26,271 +45,98 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative; /* Needed for particle background stacking */
 }
 
-/* Particle background */
+/* ==========================================================================
+   Layout & Container
+   ========================================================================== */
+
+.container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  position: relative; /* Ensure content is above particles */
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 350px; /* Main content + Sidebar */
+  gap: 2rem;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5em;
+  background: var(--accent);
+  color: var(--background);
+  z-index: 10001; /* Above everything */
+}
+
+
+/* ==========================================================================
+   Particles Background
+   ========================================================================== */
+
 #particles-js {
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 1; /* Behind content */
   background: linear-gradient(135deg, #1d3557 0%, #0f1c2e 100%);
 }
 
-/* Loading Screen */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  z-index: 10000;
-  background: var(--background);
-  opacity: 1;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
+/* ==========================================================================
+   Header
+   ========================================================================== */
 
-.loading-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.loading-screen-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.background-top-half,
-.background-bottom-half {
-  position: absolute;
-  height: 50%;
-  width: 100%;
-  background-color: var(--background);
-  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.background-top-half {
-  top: 0;
-  transform: translateY(0);
-}
-
-.background-bottom-half {
-  bottom: 0;
-  transform: translateY(0);
-}
-
-.loading-screen.hidden .background-top-half {
-  transform: translateY(-100%);
-}
-
-.loading-screen.hidden .background-bottom-half {
-  transform: translateY(100%);
-}
-
-.intro-message-container {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  color: var(--text);
-  font-size: 2.5rem;
-  font-weight: 300;
-  opacity: 0;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  text-align: center;
-}
-
-.loading-screen-content .intro-message-container.show {
-  opacity: 1;
-  transform: translate(-50%, -60%);
-}
-
-.loading-screen-content .intro-message-container.hide {
-  opacity: 0;
-  transform: translate(-50%, -80%);
-}
-
-
-.loading-bar-container {
-  width: 100%;
-  max-width: 300px;
-  height: 2px;
-  background: rgba(244, 162, 97, 0.2);
-  margin-top: 2rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.loading-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 0;
-  background-color: var(--accent);
-  transition: width 0.4s ease;
-}
-
-.percentage {
-  font-size: 1rem;
-  color: var(--text-light);
-  margin-top: 1.5rem;
-  font-weight: 300;
-  transition: opacity 0.5s ease;
-}
-
-.loading-screen.hidden .percentage {
-  opacity: 0;
-}
-
-@media (max-width: 768px) {
-  .intro-message-container {
-      font-size: 2rem;
-  }
-}
-
-/* Header with animated gradient */
 header {
-  position: relative;
-  padding: 1.5rem 1.5rem 1rem 1.5rem; /* Adjusted padding */
+  position: relative; /* For z-index stacking */
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
   text-align: center;
   background: linear-gradient(90deg, rgba(230,57,70,1) 0%, rgba(244,162,97,1) 50%, rgba(69,123,157,1) 100%);
   background-size: 200% auto;
   animation: gradientShift 8s ease infinite;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px var(--shadow-color-header);
   z-index: 10;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-header h1 {
+header h1.main-title {
   font-size: 2.8rem;
   font-weight: 900;
   letter-spacing: 2px;
-  text-shadow: 3px 3px rgba(0,0,0,0.3);
-  margin-bottom: 0.3rem; /* Reduced margin */
+  text-shadow: 3px 3px var(--shadow-color-dark);
+  margin-bottom: 0.3rem;
 }
 
 header .subtitle {
   font-size: 1.2rem;
   opacity: 0.9;
-  margin-bottom: 1rem; /* Added margin below subtitle */
+  margin-bottom: 1rem;
 }
 
-/* Character Modal Styles */
-.character-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-  opacity: 0;
-  animation: fadeIn 0.3s forwards;
-}
+/* ==========================================================================
+   News Ticker
+   ========================================================================== */
 
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-.modal-content {
-  background: var(--card-bg);
-  border-radius: 15px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  border: 1px solid var(--accent);
-  box-shadow: var(--glow);
-  transform: translateY(20px);
-  animation: slideUp 0.3s forwards;
-}
-
-@keyframes slideUp {
-  to { transform: translateY(0); }
-}
-
-.close-modal {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  cursor: pointer;
-  color: var(--text-light);
-  transition: color 0.2s;
-}
-
-.close-modal:hover {
-  color: var(--accent);
-}
-
-.modal-header {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(244, 162, 97, 0.3);
-}
-
-.modal-body {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 2rem;
-}
-
-.modal-icon {
-  font-size: 5rem;
-  text-align: center;
-}
-
-.modal-stats div {
-  margin-bottom: 0.8rem;
-}
-
-.modal-power {
-  font-style: italic;
-  margin: 1rem 0;
-  color: var(--accent);
-}
-
-.modal-chart {
-  grid-column: span 2;
-  height: 300px;
-  margin-top: 1rem;
-}
-
-@media (max-width: 768px) {
-  .modal-body {
-      grid-template-columns: 1fr;
-  }
-  .modal-chart {
-      grid-column: span 1;
-  }
-  .modal-icon {
-      display: none;
-  }
-}
-
-/* News ticker integrated into header */
 .news-ticker {
   margin: 0 auto; /* Centered */
   background: rgba(0,0,0,0.4);
@@ -299,23 +145,18 @@ header .subtitle {
   white-space: nowrap;
   border-radius: 8px;
   max-width: 1200px;
-  border: 1px solid rgba(244, 162, 97, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .news-ticker-content {
   display: inline-block;
   /* SLOWER Animation Speed */
-  animation: ticker 120s linear infinite; /* Increased duration significantly */
+  animation: ticker 120s linear infinite;
+  padding-left: 100%; /* Ensures start is off-screen for seamless loop */
 }
 
 .news-ticker-content:hover {
   animation-play-state: paused; /* Pause on hover */
-}
-
-
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
 }
 
 .news-item {
@@ -329,77 +170,98 @@ header .subtitle {
 .news-item.positive { color: var(--profit); }
 .news-item.negative { color: var(--loss); }
 
-/* Notification toast */
-#notification-area {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  width: 300px;
-  z-index: 1000;
+/* ==========================================================================
+   Market Controls (Search, Sort, Filters)
+   ========================================================================== */
+
+.market-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-.toast {
-  background: rgba(0,0,0,0.85); color: var(--text);
-  padding: 1rem; margin-bottom: 0.5rem;
-  border-left: 4px solid var(--accent);
+.market-controls .search-box {
+  flex: 1;
+  min-width: 200px;
+}
+
+.market-controls input[type="text"],
+.market-controls select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color-medium);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.market-controls .sort-options {
+    min-width: 200px;
+}
+
+.market-controls select {
+  min-width: 200px;
+  /* Consider adding an arrow indicator if browser default is removed */
+}
+
+.faction-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  /* Removed bottom margin, handled by container gap */
+  justify-content: center;
+  padding: 0.8rem;
+  background: rgba(42, 63, 95, 0.8); /* Card-like background */
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.faction-filter {
+  padding: 0.5rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  animation: fadeInOut 4s forwards;
-  display: flex; align-items: center; gap: 0.8rem;
-  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
 }
 
-.toast::before { content: '✨'; font-size: 1.2rem; }
-.toast.success { border-left-color: var(--profit); }
-.toast.success::before { content: '✅'; } /* Checkmark icon for success */
-.toast.error { border-left-color: var(--loss); }
-.toast.error::before { content: '❌'; } /* Cross icon for error */
-
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-10px); }
+.faction-filter:hover {
+  background: rgba(244, 162, 97, 0.1);
+  transform: translateY(-2px);
 }
 
-/* Layout */
-.container {
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  position: relative;
-  z-index: 5;
-  display: flex; /* Use flexbox for main container layout */
-  flex-direction: column; /* Stack children by default */
-  gap: 1.5rem; /* Gap between filters and dashboard */
-
+.faction-filter.active {
+  background: var(--accent);
+  color: var(--background);
+  font-weight: 700;
 }
 
-.dashboard {
-  display: grid;
-  grid-template-columns: 1fr 350px; /* Main content + Sidebar */
-  gap: 2rem;
-}
+/* ==========================================================================
+   Cards (General, Market, Portfolio)
+   ========================================================================== */
 
-@media (max-width: 1024px) {
-  .dashboard { grid-template-columns: 1fr; } /* Stack on smaller screens */
-  .portfolio { position: static; margin-top: 2rem; }
-}
-
-/* Card styles */
 .card {
-  background: rgba(42,63,95,0.8);
+  background: rgba(42, 63, 95, 0.8); /* Card-like background */
   border-radius: 15px;
   padding: 1.5rem;
   backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  border: 1px solid rgba(244,162,97,0.2);
+  box-shadow: 0 10px 30px var(--shadow-color);
+  border: 1px solid var(--border-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover { transform: translateY(-5px); box-shadow: var(--glow); }
-
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--glow-accent);
+}
 
 .card-header {
   display: flex;
@@ -407,7 +269,7 @@ header .subtitle {
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(244,162,97,0.3);
+  border-bottom: 1px solid var(--border-color-medium);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -422,78 +284,28 @@ header .subtitle {
   white-space: nowrap;
 }
 
-.stats { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
 .stat {
   background: var(--card-bg);
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-weight: 700;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: inset 0 1px 3px var(--shadow-color);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
 }
 
-.stat.positive { color: var(--profit); }
-.stat.negative { color: var(--loss); }
-
-/* Faction Filters */
-.faction-filters {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem; /* Added margin below filters */
-  justify-content: center;
-  padding: 0.8rem; /* Added padding */
-  background: rgba(42,63,95,0.8); /* Added background */
-  border-radius: 15px; /* Added border radius */
-  backdrop-filter: blur(8px); /* Added backdrop filter */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Added box shadow */
-  border: 1px solid rgba(244,162,97,0.2); /* Added border */
-}
-
-
-.faction-filter {
-  padding: 0.5rem 1rem;
-  background: var(--card-bg);
-  border: 1px solid rgba(244, 162, 97, 0.2);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--text); /* Ensure text color is readable */
-}
-
-.faction-filter:hover {
-  background: rgba(244, 162, 97, 0.1);
-  transform: translateY(-2px);
-}
-
-.faction-filter.active {
-  background: var(--accent);
-  color: var(--background);
-}
-
-
-/* Stocks grid */
-.stock-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  opacity: 0.7;
-  margin: 0.5rem 0;
-}
-
-.stock-faction {
-  background: rgba(69, 123, 157, 0.2);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
-.stock-volume {
-  font-style: italic;
-}
+/* ==========================================================================
+   Stock Card (Market View)
+   ========================================================================== */
 
 .stocks-grid {
   display: grid;
@@ -504,90 +316,103 @@ header .subtitle {
 .stock-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(244,162,97,0.1);
+  border: 1px solid var(--border-color-light);
   transition: all 0.3s ease;
   background: var(--card-bg);
   border-radius: 12px;
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
-   cursor: pointer; /* Added cursor pointer to indicate interactivity */
+  cursor: pointer; /* Indicate interactivity */
 }
 
-.stock-card:hover { transform: translateY(-5px); box-shadow: var(--glow); border-color: var(--accent); }
+.stock-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  /* Glow effect applied via specific character class */
+}
 
-.stock-card::before { /* Subtle gradient */
+/* Subtle gradient overlay */
+.stock-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: linear-gradient(45deg, transparent 0%, rgba(244, 162, 97, 0.03) 50%, transparent 100%);
   z-index: 0;
   pointer-events: none;
 }
 
-.stock-header, .stock-price, .stock-change, .stock-power, .stock-actions {
+.stock-card > * { /* Ensure content is above pseudo-element */
   position: relative;
   z-index: 1;
 }
 
-
-.stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-
-.stock-name { font-size: 1.1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
-
-.stock-symbol { background: rgba(244,162,97,0.2); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; }
-
-.stock-price { font-size: 1.4rem; font-weight: 700; margin: 0.5rem 0; }
-.stock-change { display: inline-block; padding: 0.3rem 0.6rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; }
-
-.positive { background-color: rgba(42, 157, 143, 0.2); color: var(--profit); }
-
-.negative { background-color: rgba(230, 57, 70, 0.2); color: var(--loss); }
-
-.text-positive { color: var(--profit); }
-.text-negative { color: var(--loss); }
-
-
-.stock-power { font-size: 0.85rem; opacity: 0.8; margin: 0.5rem 0; line-height: 1.4; min-height: 2.5em; flex-grow: 1; /* Allows power section to fill space */ }
-
-
-.stock-actions { display: flex; gap: 0.8rem; margin-top: auto; /* Pushes actions to bottom */ }
-
-
-.btn {
-  padding: 0.6rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-  text-align: center;
+.stock-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
 }
 
-.btn-buy { background: var(--profit); color: white; }
-.btn-buy:hover { background: #21867a; box-shadow: 0 0 10px rgba(42, 157, 143, 0.5); }
+.stock-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%; /* Prevent long names pushing symbol */
+}
 
-.btn-sell { background: var(--loss); color: white; }
-.btn-sell:hover { background: #c53030; box-shadow: 0 0 10px rgba(230, 57, 70, 0.5); }
+.stock-symbol {
+  background: rgba(244,162,97,0.2);
+  color: var(--accent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
 
+.stock-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
 
-/* Portfolio section */
-.portfolio {
+.stock-change {
+  display: inline-block; /* Allow background */
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.stock-power {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+  min-height: 2.5em; /* Ensure consistent height */
+  flex-grow: 1; /* Allows power section to fill space */
+}
+
+.stock-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: auto; /* Pushes actions to bottom */
+}
+
+/* ==========================================================================
+   Portfolio Section
+   ========================================================================== */
+
+.portfolio.card {
   height: fit-content;
   position: sticky;
   top: 2rem;
-   /* Removed width: 350px; to allow grid to control width */
+  /* Width is determined by the grid column */
 }
-
 
 .portfolio-value {
   font-size: 2.2rem;
@@ -600,99 +425,701 @@ header .subtitle {
   color: transparent;
 }
 
-.portfolio-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.portfolio-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
 
-.portfolio-stat { background: var(--card-bg); padding: 0.8rem; border-radius: 8px; text-align: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+.portfolio-stat {
+  background: var(--card-bg);
+  padding: 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: inset 0 1px 3px var(--shadow-color);
+}
 
-.stat-label { font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.3rem; display: block; }
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: 0.3rem;
+  display: block;
+}
 
-.stat-value { font-size: 1.1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-.portfolio-list { max-height: 500px; overflow-y: auto; padding-right: 0.8rem; margin-right: -0.8rem; }
+.portfolio-list {
+  max-height: 500px; /* Adjust as needed */
+  overflow-y: auto;
+  padding-right: 0.5rem; /* Space for scrollbar */
+  margin-right: -0.8rem; /* Hide scrollbar visually if needed */
+}
 
+/* Custom Scrollbar for Portfolio */
 .portfolio-list::-webkit-scrollbar { width: 6px; }
 .portfolio-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
 .portfolio-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-.portfolio-list::-webkit-scrollbar-thumb:hover { background: #d88c4b; }
+.portfolio-list::-webkit-scrollbar-thumb:hover { background: #d88c4b; } /* Darker accent */
 
 .portfolio-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 0;
-  border-bottom: 1px solid rgba(244, 162, 97, 0.1);
+  border-bottom: 1px solid var(--border-color-light);
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  gap: 0.5rem; /* Add gap for wrapped items */
+  gap: 0.5rem;
 }
 
-.portfolio-item:last-child { border-bottom: none; }
+.portfolio-item:last-child {
+  border-bottom: none;
+}
 
-.portfolio-stock { display: flex; align-items: center; gap: 0.8rem; flex: 1; min-width: 0; }
+.portfolio-stock {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1; /* Take available space */
+  min-width: 150px; /* Ensure minimum space before wrapping details */
+}
 
-.portfolio-stock-icon { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: var(--card-bg); border: 1px solid rgba(244, 162, 97, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.portfolio-stock-icon {
+  width: 32px; height: 32px;
+  min-width: 32px; /* Prevent shrinking */
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
 
-.portfolio-stock-info { flex: 1; min-width: 0; }
+.portfolio-stock-info {
+  flex: 1; /* Take available space within the stock container */
+  min-width: 0; /* Allow shrinking */
+}
 
-.portfolio-stock-name { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.portfolio-stock-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-.portfolio-stock-shares { font-size: 0.8rem; opacity: 0.7; }
+.portfolio-stock-shares {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
 
-.portfolio-stock-details { text-align: right; min-width: 80px; } /* Adjusted min-width */
+/* Meta Info (Faction, Volume) - Added from template structure */
+.stock-meta {
+ display: flex;
+ justify-content: space-between;
+ font-size: 0.75rem;
+ opacity: 0.7;
+ margin: 0.5rem 0;
+ width: 100%; /* Ensure it takes full width in portfolio item wrap */
+ order: 3; /* Place below stock info and details when wrapped */
+}
 
-.portfolio-stock-value { font-weight: 700; display: block; font-size: 0.95rem; }
+.stock-faction {
+ background: rgba(69, 123, 157, 0.2);
+ padding: 0.2rem 0.5rem;
+ border-radius: 4px;
+}
 
-.portfolio-stock-change { font-size: 0.8rem; display: block; }
-
-
-/* Character glow effects - Apply to stock-card */
-.luffy-glow:hover { box-shadow: 0 0 15px rgba(230, 57, 70, 0.7); border-color: var(--primary); }
-.zoro-glow:hover { box-shadow: 0 0 15px rgba(42, 157, 143, 0.7); border-color: var(--profit); }
-.sanji-glow:hover { box-shadow: 0 0 15px rgba(244, 162, 97, 0.7); border-color: var(--accent); }
-.kaido-glow:hover { box-shadow: 0 0 15px rgba(69, 123, 157, 0.7); border-color: var(--secondary); }
-.shanks-glow:hover { box-shadow: 0 0 15px rgba(180, 40, 40, 0.8); border-color: #b42828; }
-.bb-glow:hover { box-shadow: 0 0 15px rgba(50, 50, 50, 0.8); border-color: #555; }
-.kizaru-glow:hover { box-shadow: var(--admiral-yellow-glow); border-color: #FFEB3B; }
-.fujitora-glow:hover { box-shadow: var(--admiral-purple-glow); border-color: #ab70e6; }
-.greenbull-glow:hover { box-shadow: var(--admiral-green-glow); border-color: #4CAF50; }
-.garp-glow:hover { box-shadow: 0 0 15px rgba(100, 100, 200, 0.7); border-color: #6464c8; }
-.dragon-glow:hover { box-shadow: 0 0 15px rgba(200, 50, 50, 0.8); border-color: #c83232; }
+.stock-volume {
+ font-style: italic;
+}
 
 
-/* Responsive design adjustments */
+.portfolio-stock-details {
+  text-align: right;
+  min-width: 90px; /* Slightly more space for value/change */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.portfolio-stock-value {
+  font-weight: 700;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.portfolio-stock-change {
+  font-size: 0.8rem;
+  display: block;
+}
+
+
+/* ==========================================================================
+   Modals (General, Quantity, Character Detail)
+   ========================================================================== */
+
+.modal { /* Base modal styles (used by quantity and character) */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active { /* Use JS to add/remove 'active' class */
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid var(--accent);
+  box-shadow: var(--glow-accent);
+  position: relative;
+  width: 90%;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: color 0.2s;
+  background: none;
+  border: none;
+}
+
+.close-modal:hover {
+  color: var(--accent);
+}
+
+/* Quantity Modal Specifics */
+#quantity-modal .modal-content {
+  max-width: 400px;
+}
+
+#quantity-modal h3 {
+  margin-bottom: 1rem;
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+#quantity-modal #modal-character-info {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+#quantity-modal .quantity-selector {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#quantity-modal label {
+    font-weight: 500;
+}
+
+#quantity-modal input[type="number"] {
+  flex-grow: 1;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color-medium);
+  background: var(--background); /* Darker than card bg */
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+#quantity-modal .modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Avoid !important for modal buttons */
+#quantity-modal .btn.btn-cancel {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+#quantity-modal .btn.btn-cancel:hover {
+  background: rgba(244, 162, 97, 0.1);
+}
+
+#quantity-modal .btn.btn-confirm {
+  background: var(--accent);
+  color: var(--background);
+  border: 1px solid var(--accent);
+}
+#quantity-modal .btn.btn-confirm:hover {
+  background: #d88c4b; /* Darker accent */
+  border-color: #d88c4b;
+}
+
+
+/* Character Detail Modal Specifics */
+.character-modal .modal-content { /* Use class from JS */
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  /* Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) rgba(0,0,0,0.1);
+}
+.character-modal .modal-content::-webkit-scrollbar { width: 6px; }
+.character-modal .modal-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
+.character-modal .modal-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+.character-modal .modal-content::-webkit-scrollbar-thumb:hover { background: #d88c4b; }
+
+.modal-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color-medium);
+}
+.modal-header h2 {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+.modal-faction {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 100px 1fr; /* Icon | Stats/Desc/Chart */
+  gap: 2rem;
+}
+
+.modal-icon {
+  font-size: 5rem;
+  text-align: center;
+  line-height: 1;
+  margin-top: 1rem;
+}
+
+.modal-stats div {
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+.modal-stats span.positive,
+.modal-stats span.negative {
+    font-weight: 700;
+}
+
+.modal-power {
+  font-style: italic;
+  margin: 1rem 0;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.modal-description {
+    line-height: 1.5;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.modal-chart {
+  grid-column: span 2; /* Span across both columns */
+  height: 300px; /* Fixed height for chart */
+  margin-top: 1rem;
+  position: relative; /* For Chart.js canvas */
+}
+.modal-chart canvas {
+    max-height: 100%;
+}
+
+
+/* ==========================================================================
+   Loading Screen
+   ========================================================================== */
+
+.loading-screen {
+  position: fixed;
+  top: 0; left: 0;
+  height: 100%; width: 100%;
+  overflow: hidden;
+  z-index: 10000;
+  background: var(--background);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease, visibility 0.8s ease 0s; /* Delay visibility transition */
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 1s; /* Wait for animations before hiding */
+}
+
+.loading-screen-content {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.background-top-half,
+.background-bottom-half {
+  position: absolute;
+  height: 50%; width: 100%;
+  background-color: var(--background);
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 1;
+}
+
+.background-top-half { top: 0; transform: translateY(0); }
+.background-bottom-half { bottom: 0; transform: translateY(0); }
+
+.loading-screen.hidden .background-top-half { transform: translateY(-100%); }
+.loading-screen.hidden .background-bottom-half { transform: translateY(100%); }
+
+.intro-message-container {
+  position: relative; /* Changed from absolute */
+  color: var(--text);
+  font-size: 2.5rem;
+  font-weight: 300; /* Lighter weight */
+  opacity: 0;
+  transform: translateY(20px); /* Start slightly lower */
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  text-align: center;
+  z-index: 2; /* Above halves */
+  margin-bottom: -50px; /* Pull bar/percentage up */
+}
+
+.intro-message-container.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-message-container.hide {
+  opacity: 0;
+  transform: translateY(-20px); /* Move up on hide */
+}
+
+.loading-bar-container {
+  width: 100%;
+  max-width: 300px;
+  height: 2px;
+  background: rgba(244, 162, 97, 0.2);
+  margin-top: 2rem; /* Space below (potential) message */
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.loading-bar {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: 0; /* Controlled by JS */
+  background-color: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.percentage {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-top: 1.5rem;
+  font-weight: 300;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+
+.loading-screen.hidden .percentage,
+.loading-screen.hidden .loading-bar-container {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   Notification Area (Toasts)
+   ========================================================================== */
+
+#notification-area {
+  position: fixed;
+  top: 1rem; right: 1rem;
+  width: 300px;
+  z-index: 10001; /* Above most elements */
+}
+
+.toast {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid var(--accent); /* Default border */
+  border-radius: 6px;
+  color: var(--text);
+  box-shadow: 0 4px 15px var(--shadow-color-dark);
+  animation: fadeInOut 4s forwards ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+}
+
+/* Icons using pseudo-elements (simple examples) */
+.toast::before {
+  content: '';
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.toast.info::before { content: '\\2139'; } /* i symbol */
+.toast.success { border-left-color: var(--profit); }
+.toast.success::before { content: '\\2714'; } /* Checkmark */
+.toast.error { border-left-color: var(--loss); }
+.toast.error::before { content: '\\2716'; } /* Cross */
+
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+footer {
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+  background: rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-content p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.positive { /* Used for stock change background */
+  background-color: rgba(42, 157, 143, 0.2);
+  color: var(--profit);
+}
+
+.negative { /* Used for stock change background */
+  background-color: rgba(230, 57, 70, 0.2);
+  color: var(--loss);
+}
+
+.text-positive { /* Used for text color only */
+  color: var(--profit);
+}
+
+.text-negative { /* Used for text color only */
+  color: var(--loss);
+}
+
+.btn {
+  padding: 0.6rem 1rem; /* Added horizontal padding */
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1; /* Make buttons share space in flex containers */
+  text-align: center;
+  display: inline-flex; /* Use inline-flex for icon alignment */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  text-decoration: none; /* Remove underline if used as links */
+  line-height: 1.2; /* Ensure text fits */
+}
+
+
+.btn .icon
+.btn-buy {
+  background: var(--profit);
+  color: white;
+}
+.btn-buy:hover {
+  background: #21867a; /* Darker profit */
+  box-shadow: var(--glow-profit);
+}
+
+.btn-sell {
+  background: var(--loss);
+  color: white;
+}
+.btn-sell:hover {
+  background: #c53030; /* Darker loss */
+  box-shadow: var(--glow-loss);
+}
+
+
+/* ==========================================================================
+   Character Glow Effects (:hover on .stock-card)
+   ========================================================================== */
+
+.luffy-glow:hover { box-shadow: var(--glow-luffy); border-color: var(--primary); }
+.zoro-glow:hover { box-shadow: var(--glow-zoro); border-color: var(--profit); }
+.sanji-glow:hover { box-shadow: var(--glow-sanji); border-color: var(--accent); }
+.kaido-glow:hover { box-shadow: var(--glow-kaido); border-color: var(--secondary); }
+.shanks-glow:hover { box-shadow: var(--glow-shanks); border-color: #b42828; }
+.bb-glow:hover { box-shadow: var(--glow-bb); border-color: #555; }
+.kizaru-glow:hover { box-shadow: var(--glow-kizaru); border-color: #FFEB3B; }
+.fujitora-glow:hover { box-shadow: var(--glow-fujitora); border-color: #ab70e6; }
+.greenbull-glow:hover { box-shadow: var(--glow-greenbull); border-color: #4CAF50; }
+.garp-glow:hover { box-shadow: var(--glow-garp); border-color: #6464c8; }
+.dragon-glow:hover { box-shadow: var(--glow-dragon); border-color: #c83232; }
+/* Add other glows as needed */
+.imu-glow:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); border-color: #fff; }
+.buggy-glow:hover { box-shadow: 0 0 15px rgba(255, 0, 255, 0.7); border-color: magenta; }
+.enel-glow:hover { box-shadow: 0 0 15px rgba(0, 188, 212, 0.7); border-color: #00BCD4; }
+
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Translate half distance due to duplicated content */
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(20px); } /* Start from right */
+  10% { opacity: 1; transform: translateX(0); }
+  90% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(20px); } /* Fade out to right */
+}
+
+/* Modal animation already handled by .active class transitions */
+
+/* ==========================================================================
+   Media Queries (Responsiveness)
+   ========================================================================== */
+
 @media (max-width: 1024px) {
-  header h1 { font-size: 2rem; }
+  .dashboard {
+    grid-template-columns: 1fr; /* Stack dashboard columns */
+    gap: 1.5rem;
+  }
+
+  .portfolio.card {
+    position: static; /* Unstick portfolio */
+    width: 100%;
+  }
+
+  header h1.main-title { font-size: 2rem; }
   header .subtitle { font-size: 1rem; }
   .news-ticker { padding: 0.4rem; }
   .news-item { font-size: 0.9rem; margin-right: 2rem; }
-  .stocks-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } /* Adjusted minmax */
-  .dashboard { gap: 1.5rem; }
+
+  .stocks-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } /* Slightly smaller cards */
   .card-header { align-items: flex-start; gap: 1rem; }
   .stats { width: 100%; justify-content: space-around; }
   .stat { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-  .portfolio-stats { grid-template-columns: 1fr 1fr; }
-  .portfolio-list { max-height: 300px; }
-   .faction-filters { margin-bottom: 1rem; } /* Keep margin below filters */
 
+  .portfolio-stats { grid-template-columns: 1fr 1fr; } /* Keep 2 columns if space allows */
+  .portfolio-list { max-height: 350px; } /* Adjust height */
 }
 
 @media (max-width: 768px) {
   .container { padding: 0 0.5rem; }
   header { padding: 1rem 1rem 0.5rem 1rem; }
-  header h1 { font-size: 1.8rem; }
+  header h1.main-title { font-size: 1.8rem; }
   .card-title { font-size: 1.5rem; }
   .portfolio-value { font-size: 1.8rem; }
+
+  .market-controls { flex-direction: column; } /* Stack controls */
+
+  .stats { gap: 0.5rem; }
   .stat { flex-direction: column; text-align: center; gap: 0.2rem; padding: 0.5rem;}
   .stat-label { font-size: 0.7rem; }
   .stat-value { font-size: 1rem; }
-  .btn { font-size: 0.8rem; padding: 0.5rem; }
+
+  .stocks-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; } /* Smaller cards */
   .stock-name { font-size: 1rem; }
   .stock-price { font-size: 1.2rem; }
-  .portfolio-item { flex-direction: column; align-items: stretch; gap: 0.5rem;}
-  .portfolio-stock-details { text-align: left; margin-top: 0.3rem;}
-   .modal-body { grid-template-columns: 1fr; gap: 1rem; } /* Adjusted modal body for smaller screens */
-   .modal-chart { grid-column: span 1; }
-   .modal-icon { display: none; }
-   .faction-filters { padding: 0.6rem; border-radius: 10px; } /* Adjusted filter styling */
+  .stock-power { font-size: 0.8rem; min-height: 2em; }
+  .btn { font-size: 0.8rem; padding: 0.5rem; }
 
+  .portfolio-item {
+      flex-direction: column;
+      align-items: stretch; /* Make items take full width */
+      gap: 0.5rem;
+  }
+  .portfolio-stock-details { text-align: left; margin-top: 0.3rem; }
+  .stock-meta { order: 2; } /* Place meta below stock info */
 
+  /* Modals on small screens */
+  .modal-content { padding: 1.5rem; }
+  .modal-body { grid-template-columns: 1fr; gap: 1rem; }
+  .modal-icon { display: none; } /* Hide icon */
+  .modal-chart { grid-column: span 1; height: 250px; }
+
+  #quantity-modal .modal-content { width: 95%; }
+
+  .intro-message-container { font-size: 2rem; }
+
+  .faction-filters { padding: 0.6rem; border-radius: 10px; }
+  .faction-filter { padding: 0.4rem 0.8rem; font-size: 0.8rem;}
 }
+
+@media (max-width: 480px) {
+    header h1.main-title { font-size: 1.5rem; }
+    header .subtitle { font-size: 0.9rem; }
+    .card-title { font-size: 1.3rem; }
+
+    .stocks-grid { grid-template-columns: 1fr; } /* Single column */
+
+    .portfolio-stats { grid-template-columns: 1fr; } /* Stack portfolio stats */
+    .portfolio-stock-info { flex-direction: column; align-items: flex-start;} /* Stack name/shares */
+
+    .btn { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+    .stock-symbol { font-size: 0.7rem; padding: 0.1rem 0.4rem;}
+}
+
