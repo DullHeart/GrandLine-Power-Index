@@ -21,6 +21,8 @@ const portfolioTotalPiratesElem = document.getElementById('portfolio-total-pirat
 const portfolioHighestPosElem = document.getElementById('portfolio-highest-pos');
 const portfolioBestPerfElem = document.getElementById('portfolio-best-perf');
 const stocksLoadingMsg = document.getElementById('stocks-loading-msg');
+const searchInput = document.getElementById('search-input');
+const sortSelect = document.getElementById('sort-select');
 
 // Call this periodically to update prices
 function updateMarket() {
@@ -190,15 +192,24 @@ function showCharacterDetail(characterId) {
 
 // Add click handler to stock cards (put this in your initialization)
 function initStockCardClicks() {
-    document.querySelectorAll('.stock-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (!e.target.closest('.btn')) {
-                const charId = parseInt(card.querySelector('.btn-buy').dataset.id);
-                showCharacterDetail(charId);
-            }
-        });
+    stocksContainer.addEventListener('click', (e) => {
+        const buyButton = e.target.closest('.btn-buy');
+        const sellButton = e.target.closest('.btn-sell');
+        const card = e.target.closest('.stock-card');
+        
+        if (buyButton) {
+            e.stopPropagation();
+            showQuantityModal(parseInt(buyButton.dataset.id), 'buy');
+        } else if (sellButton) {
+            e.stopPropagation();
+            showQuantityModal(parseInt(sellButton.dataset.id), 'sell');
+        } else if (card) {
+            const charId = parseInt(card.querySelector('.btn-buy').dataset.id);
+            showCharacterDetail(charId);
+        }
     });
 }
+
 
 // Loading screen animation functions
 function animateLoadingScreen() {
@@ -468,15 +479,48 @@ function initNews() {
 
 
 // --- Actions
-function buyStock(characterId, quantity = 1) {
+
+function showQuantityModal(characterId, action) {
     const character = characters.find(c => c.id === characterId);
     if (!character) return;
 
-    // Add balance check if beliBalance is implemented
-    // if (beliBalance < character.price * quantity) {
-    //      showNotification(`Not enough Beli to buy ${quantity} share(s) of ${character.name}!`, 'error');
-    //      return;
-    // }
+    const modal = document.createElement('div');
+    modal.className = 'quantity-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>${action === 'buy' ? 'Buy' : 'Sell'} ${character.name}</h3>
+            <p>Current Price: ${formatBeli(character.price)}</p>
+            <input type="number" id="quantity-input" min="1" value="1">
+            <div class="modal-actions">
+                <button class="btn btn-cancel">Cancel</button>
+                <button class="btn btn-confirm">${action === 'buy' ? 'Buy' : 'Sell'}</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector('.btn-cancel').addEventListener('click', () => modal.remove());
+    modal.querySelector('.btn-confirm').addEventListener('click', () => {
+        const quantity = parseInt(modal.querySelector('#quantity-input').value) || 1;
+        if (action === 'buy') {
+            buyStock(characterId, quantity);
+        } else {
+            sellStock(characterId, quantity);
+        }
+        modal.remove();
+    });
+}
+
+
+function buyStock(characterId, quantity = 1) {
+    if (isNaN(quantity) || quantity < 1) {
+        showNotification('Please enter a valid quantity', 'error');
+        return;
+    }
+
+    const character = characters.find(c => c.id === characterId);
+    if (!character) return;
 
     const existingHolding = portfolio.find(item => item.id === characterId);
     if (existingHolding) {
@@ -485,43 +529,84 @@ function buyStock(characterId, quantity = 1) {
         portfolio.push({ id: characterId, shares: quantity });
     }
 
-    // if (beliBalance !== undefined) {
-    //     beliBalance -= character.price * quantity;
-    //     // Update Beli balance display
-    // }
-
     showNotification(`Bought ${quantity} share(s) of ${character.name}!`, 'success');
     renderPortfolio();
     savePortfolio();
 }
 
+
 function sellStock(characterId, quantity = 1) {
+    if (isNaN(quantity) || quantity < 1) {
+        showNotification('Please enter a valid quantity', 'error');
+        return;
+    }
+
     const character = characters.find(c => c.id === characterId);
     if (!character) return;
 
     const existingHolding = portfolio.find(item => item.id === characterId);
-
     if (!existingHolding || existingHolding.shares < quantity) {
         showNotification(`Not enough shares of ${character.name} to sell!`, 'error');
         return;
     }
 
     existingHolding.shares -= quantity;
-
     if (existingHolding.shares <= 0) {
         portfolio = portfolio.filter(item => item.id !== characterId);
     }
 
-     // if (beliBalance !== undefined) {
-    //     beliBalance += character.price * quantity;
-    //     // Update Beli balance display
-    // }
-
-    showNotification(`Sold ${quantity} share(s) of ${character.name}!`, 'success'); // Changed type to success
+    showNotification(`Sold ${quantity} share(s) of ${character.name}!`, 'success');
     renderPortfolio();
     savePortfolio();
 }
 
+
+// Add search and sort functionality:
+function applySearchAndSort() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const sortValue = sortSelect.value;
+    
+    let filtered = characters;
+    
+    // Apply search
+    if (searchTerm) {
+        filtered = filtered.filter(c => 
+            c.name.toLowerCase().includes(searchTerm) || 
+            c.symbol.toLowerCase().includes(searchTerm) ||
+            c.faction.toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    // Apply sort
+    switch(sortValue) {
+        case 'price-desc':
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+        case 'price-asc':
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+        case 'change-desc':
+            filtered.sort((a, b) => b.change - a.change);
+            break;
+        case 'change-asc':
+            filtered.sort((a, b) => a.change - b.change);
+            break;
+        case 'name-asc':
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name-desc':
+            filtered.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        default:
+            filtered.sort((a, b) => b.price - a.price);
+    }
+    
+    renderStocks(filtered);
+}
+
+// Event listeners for search and sort
+searchInput.addEventListener('input', applySearchAndSort);
+sortSelect.addEventListener('change', applySearchAndSort);
 
 // Simulation
 function simulateMarketChanges() {
@@ -560,38 +645,43 @@ async function initializeApp() {
     console.log("Initializing One Piece Power Exchange...");
 
     // Show loading state
-    if(stocksContainer) stocksContainer.innerHTML = '<p>Loading character data...</p>';
+    if(stocksContainer) {
+        stocksContainer.innerHTML = '<p>Loading character data...</p>';
+        searchInput.disabled = true;
+        sortSelect.disabled = true;
+    }
     if(portfolioContainer) portfolioContainer.innerHTML = '<p style="text-align:center; opacity:0.7;">Loading portfolio...</p>';
-
 
     // Load character data
     try {
-        characters = await loadCharacterData(); // Load data and assign to characters
+        characters = await loadCharacterData();
         console.log("Character data loaded.", characters);
+        
+        // Enable controls after load
+        if(searchInput) searchInput.disabled = false;
+        if(sortSelect) sortSelect.disabled = false;
     } catch (error) {
         console.error("Failed to load character data:", error);
-         stocksContainer.innerHTML = `
+        stocksContainer.innerHTML = `
             <p style="text-align: center; opacity: 0.7;">Failed to load stock data.</p>
             <div style="text-align: center; margin-top: 1rem;">
-                 <button class="btn" onclick="initializeApp()">Retry</button>
+                <button class="btn" onclick="initializeApp()">Retry</button>
             </div>
         `;
-         portfolioContainer.innerHTML = '<p style="text-align: center; opacity: 0.7;">Failed to load portfolio data.</p>';
-        return; // Stop initialization if data loading fails
+        portfolioContainer.innerHTML = '<p style="text-align: center; opacity: 0.7;">Failed to load portfolio data.</p>';
+        return;
     }
-
 
     // Initialize the app with loaded data
     initNews();
     renderFactionFilters();
-    loadPortfolioFromStorage(); // Load portfolio BEFORE rendering it
+    loadPortfolioFromStorage();
     renderPortfolio();
-    renderStocks(); // Render stocks AFTER data is loaded
+    renderStocks();
     initStockCardClicks();
 
-
     // Start market simulation
-    setInterval(simulateMarketChanges, 10000); // 10 seconds
+    setInterval(simulateMarketChanges, 10000);
     console.log("App Initialized. Market simulation running.");
 }
 
@@ -609,4 +699,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export functions if needed for other modules (though combined here)
 // export { stockData, loadCharacterData, generatePriceHistory, updateMarket, buyStock, sellStock, initializeApp };
-
