@@ -6,11 +6,27 @@
     <meta name="description" content="One Piece Power Exchange - Trade and track power levels of characters from the One Piece universe">
     <title>One Piece Power Exchange</title>
 
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="V3-One-Piece.css"> </head>
+    <link rel="stylesheet" href="V3-One-Piece.css">
+
+    <style>
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
 <body>
 
     <a href="#market-card" class="skip-link">Skip to main content</a>
@@ -25,14 +41,16 @@
             <div class="loading-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Loading progress">
                 <div class="loading-bar" id="loading-bar"></div>
             </div>
-            <div class="percentage" id="loading-percentage" aria-hidden="true">0%</div> </div>
+            <div class="percentage" id="loading-percentage" aria-hidden="true">0%</div>
+        </div>
     </div>
 
     <header role="banner">
         <h1 class="main-title">One Piece Power Exchange</h1>
         <div class="subtitle">Trade the strength of the world's most powerful pirates!</div>
         <div class="news-ticker" aria-label="Latest Market News">
-            <div class="news-ticker-content" id="ticker-content" aria-live="off"> </div>
+            <div class="news-ticker-content" id="ticker-content" aria-live="off">
+                </div>
         </div>
     </header>
 
@@ -47,7 +65,8 @@
         </nav>
 
         <section class="market-controls" aria-labelledby="market-controls-heading">
-            <h2 id="market-controls-heading" class="visually-hidden">Market Controls</h2> <div class="search-box">
+            <h2 id="market-controls-heading" class="visually-hidden">Market Controls</h2>
+            <div class="search-box">
                 <label for="search-input">Search Characters</label>
                 <input type="text" id="search-input" placeholder="Search characters..." aria-label="Search characters by name, symbol, or faction">
             </div>
@@ -62,6 +81,8 @@
                     <option value="name-desc">Name (Z-A)</option>
                 </select>
             </div>
+            <button id="theme-toggle" class="btn theme-toggle-btn" aria-label="Toggle light and dark mode">
+                <span class="icon">☀️</span> </button>
         </section>
 
         <div class="dashboard">
@@ -75,7 +96,8 @@
                         <div class="stat" id="market-pirates" aria-label="Total Characters in Market">0 Pirates</div>
                     </div>
                 </div>
-                <div class="stocks-grid" id="stocks-container" aria-live="polite" aria-atomic="true"> <p id="stocks-loading-msg">Loading market data...</p>
+                <div class="stocks-grid" id="stocks-container" aria-live="polite" aria-atomic="true">
+                    <p id="stocks-loading-msg">Loading market data...</p>
                     </div>
             </main>
 
@@ -107,16 +129,21 @@
                     </div>
             </aside>
 
-        </div> </div> <footer role="contentinfo">
+        </div>
+    </div>
+
+    <footer role="contentinfo">
         <div class="footer-content">
-            <p>&copy; 2025 One Piece Power Exchange</p> <div class="exchange-hours">
+            <p>&copy; 2025 One Piece Power Exchange</p>
+            <div class="exchange-hours">
                 <p>Exchange Hours: 24/7 in the Grand Line</p>
             </div>
         </div>
     </footer>
 
     <template id="stock-card-template">
-        <div class="stock-card" tabindex="0"> <div class="stock-header">
+        <div class="stock-card" tabindex="0">
+            <div class="stock-header">
                 <span class="stock-name">Character Name</span>
                 <span class="stock-symbol">SYMBOL</span>
             </div>
@@ -128,21 +155,24 @@
                 <span class="stock-volume">Vol: 0</span>
             </div>
             <div class="stock-actions">
-                 <button type="button" class="btn btn-buy"><span class="icon">➕</span> Buy</button> <button type="button" class="btn btn-sell"><span class="icon">➖</span> Sell</button> </div>
+                 <button type="button" class="btn btn-buy" data-id=""><span class="icon"></span> Buy</button>
+                 <button type="button" class="btn btn-sell" data-id=""><span class="icon"></span> Sell</button>
+                 <button type="button" class="btn compare-btn" data-id=""><span class="icon"></span> Compare</button>
+            </div>
         </div>
     </template>
 
     <template id="portfolio-item-template">
         <div class="portfolio-item">
             <div class="portfolio-stock">
-                <div class="portfolio-stock-icon">?</div> <div class="portfolio-stock-info">
+                <div class="portfolio-stock-icon">?</div>
+                <div class="portfolio-stock-info">
                     <div class="portfolio-stock-name">Character Name</div>
                     <div class="portfolio-stock-shares">0 shares</div>
+                    <div class="portfolio-stock-power">Power: Character power...</div>
+                    <div class="portfolio-stock-haki">Haki: Character haki mastery...</div>
+                    <div class="portfolio-stock-bounty">Bounty: Character bounty...</div>
                 </div>
-            </div>
-            <div class="stock-meta">
-                <span class="stock-faction">Faction</span>
-                <span class="stock-volume">Vol: 0</span>
             </div>
             <div class="portfolio-stock-details">
                 <div class="portfolio-stock-value">B 0</div>
@@ -151,11 +181,56 @@
         </div>
     </template>
 
+    <template id="comparison-modal-template">
+        <div class="modal comparison-modal" role="dialog" aria-modal="true" aria-labelledby="comparison-modal-title">
+            <div class="modal-content">
+                <button type="button" class="close-modal" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <h2 id="comparison-modal-title">Character Comparison</h2>
+                    <div class="comparison-subtitle">Price History Comparison</div>
+                </div>
+                <div class="comparison-body">
+                    <div class="character-info character-left">
+                        <div class="comparison-icon">?</div>
+                        <div class="comparison-stats">
+                            <div>Price: <strong>B 0</strong></div>
+                            <div>24h: <strong class="text-positive">--%</strong></div>
+                            <div>Volatility: <strong>0.0%</strong></div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                    <div class="character-info character-right">
+                         <div class="comparison-icon">?</div>
+                        <div class="comparison-stats">
+                            <div>Price: <strong>B 0</strong></div>
+                            <div>24h: <strong class="text-positive">--%</strong></div>
+                            <div>Volatility: <strong>0.0%</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-metrics">
+                    <div class="metric">
+                        <span>Correlation:</span>
+                        <strong id="correlation-value">N/A</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Price Difference:</span>
+                        <strong>B 0</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
     <div id="quantity-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
              <button type="button" class="close-modal" aria-label="Close">&times;</button>
             <h3 id="modal-title">Buy/Sell Character</h3>
-            <div id="modal-character-info">Current Price: B 0</div> <div class="quantity-selector">
+            <div id="modal-character-info">Current Price: B 0</div>
+            <div class="quantity-selector">
                 <label for="quantity-input">Quantity:</label>
                 <input type="number" id="quantity-input" min="1" value="1" required>
             </div>
@@ -170,19 +245,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script defer type="module" src="script.js"></script>
-    <style>
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
 
 </body>
 </html>
