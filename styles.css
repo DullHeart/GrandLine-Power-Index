@@ -1,615 +1,866 @@
 /*
 ======================================================================
-CSS Variables (Theme)
+CSS Variables (Theme) - IMPROVED & CONSOLIDATED
 ======================================================================
 */
 :root {
-    /* Dark Mode (Default) */
-    --primary: #e63946; /* Red */
-    --secondary: #457b9d; /* Blue */
-    --accent: #f4a261; /* Orange */
-    --background: #1d3557; /* Dark Blue */
+    /* Color Palette - Base colors for both modes */
+    --red: #e63946;
+    --blue: #457b9d;
+    --orange: #f4a261;
+    --dark-blue: #1d3557;
+    --light-blue: #a8dadc;
+    --cream: #f1faee;
+    --teal: #2a9d8f;
+    
+    /* Theme Setup - Dark Mode (Default) */
+    --primary: var(--red);
+    --secondary: var(--blue);
+    --accent: var(--orange);
+    --background: var(--dark-blue);
     --card-bg: #2a3f5f; /* Slightly Lighter Dark Blue */
-    --text: #f1faee; /* Light Cream */
-    --text-light: rgba(241, 250, 238, 0.8); /* Lighter Text */
-    --profit: #2a9d8f; /* Teal */
-    --loss: #e63946; /* Red (Same as primary) */
-    --border-color: rgba(244, 162, 97, 0.2); /* Accent with alpha */
+    --text: var(--cream);
+    --text-light: rgba(241, 250, 238, 0.8);
+    
+    /* Status Colors */
+    --profit: var(--teal);
+    --loss: var(--red);
+    
+    /* Border Colors */
+    --border-color: rgba(244, 162, 97, 0.2);
     --border-color-light: rgba(244, 162, 97, 0.1);
     --border-color-medium: rgba(244, 162, 97, 0.3);
+    
+    /* Shadow Colors */
     --shadow-color: rgba(0, 0, 0, 0.2);
     --shadow-color-dark: rgba(0, 0, 0, 0.3);
     --shadow-color-header: rgba(0, 0, 0, 0.4);
-
-    /* Glows (can be adjusted for light mode if needed, but often work by changing border/shadow) */
+  
+    /* Glows */
     --glow-accent: 0 0 15px rgba(244, 162, 97, 0.7);
     --glow-profit: 0 0 10px rgba(42, 157, 143, 0.5);
     --glow-loss: 0 0 10px rgba(230, 57, 70, 0.5);
-
-    /* Specific Character Glows (can be overridden in light mode if contrast is an issue) */
-    --glow-luffy: 0 0 15px rgba(230, 57, 70, 0.7); /* Red */
-    --glow-zoro: 0 0 15px rgba(42, 157, 143, 0.7); /* Teal */
-    --glow-sanji: var(--glow-accent); /* Orange */
-    --glow-kaido: 0 0 15px rgba(69, 123, 157, 0.7); /* Blue */
-    --glow-shanks: 0 0 15px rgba(180, 40, 40, 0.8); /* Darker Red */
-    --glow-bb: 0 0 15px rgba(50, 50, 50, 0.7); /* Grey/Black */
-    --glow-kizaru: 0 0 15px rgba(255, 235, 59, 0.7); /* Yellow */
-    --glow-fujitora: 0 0 15px rgba(173, 112, 230, 0.7); /* Purple */
-    --glow-greenbull: 0 0 15px rgba(76, 175, 80, 0.7); /* Green */
-    --glow-garp: 0 0 15px rgba(100, 100, 200, 0.8); /* Lighter Blue */
-    --glow-dragon: 0 0 15px rgba(200, 50, 50, 0.8); /* Reddish */
-    --glow-imu: 0 0 15px rgba(255, 255, 255, 0.5); /* White */
-    --glow-buggy: 0 0 15px rgba(255, 0, 255, 0.7); /* Magenta */
-    --glow-enel: 0 0 15px rgba(0, 188, 212, 0.7); /* Cyan */
-}
-
-/* Light Mode */
-body.light-mode {
-    --background: #f1faee; /* Light Cream */
-    --card-bg: #a8dadc; /* Lighter Blue */
-    --text: #1d3557; /* Dark Blue */
-    --text-light: rgba(29, 53, 87, 0.8); /* Lighter Dark Blue */
-    /* Keep primary, secondary, accent, profit, loss the same for consistency */
-    --border-color: rgba(29, 53, 87, 0.2); /* Dark Blue with alpha */
+  
+    /* Character Glows */
+    --glow-luffy: 0 0 15px rgba(230, 57, 70, 0.7);
+    --glow-zoro: 0 0 15px rgba(42, 157, 143, 0.7);
+    --glow-sanji: var(--glow-accent);
+    --glow-kaido: 0 0 15px rgba(69, 123, 157, 0.7);
+    --glow-shanks: 0 0 15px rgba(180, 40, 40, 0.8);
+    --glow-bb: 0 0 15px rgba(50, 50, 50, 0.7);
+    --glow-kizaru: 0 0 15px rgba(255, 235, 59, 0.7);
+    --glow-fujitora: 0 0 15px rgba(173, 112, 230, 0.7);
+    --glow-greenbull: 0 0 15px rgba(76, 175, 80, 0.7);
+    --glow-garp: 0 0 15px rgba(100, 100, 200, 0.8);
+    --glow-dragon: 0 0 15px rgba(200, 50, 50, 0.8);
+    --glow-imu: 0 0 15px rgba(255, 255, 255, 0.5);
+    --glow-buggy: 0 0 15px rgba(255, 0, 255, 0.7);
+    --glow-enel: 0 0 15px rgba(0, 188, 212, 0.7);
+  }
+  
+  /* Light Mode */
+  .light-mode {
+    --background: var(--cream);
+    --card-bg: var(--light-blue);
+    --text: var(--dark-blue);
+    --text-light: rgba(29, 53, 87, 0.8);
+    
+    /* Update border colors for light mode */
+    --border-color: rgba(29, 53, 87, 0.2);
     --border-color-light: rgba(29, 53, 87, 0.1);
     --border-color-medium: rgba(29, 53, 87, 0.3);
-    --shadow-color: rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    
+    /* Lighter shadows for light mode */
+    --shadow-color: rgba(0, 0, 0, 0.1);
     --shadow-color-dark: rgba(0, 0, 0, 0.2);
     --shadow-color-header: rgba(0, 0, 0, 0.3);
-
-    /* Adjust glows for light mode if needed for visibility/contrast */
-    /* Example: make them slightly less intense or change color */
-    /* --glow-accent: 0 0 10px rgba(244, 162, 97, 0.5); */
-}
-
-
-/*
-======================================================================
-Base Styles
-======================================================================
-*/
-* {
+  }
+  
+  /*
+  ======================================================================
+  Base Styles
+  ======================================================================
+  */
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
+  }
+  
+  body {
     font-family: 'Kanit', sans-serif;
     background-color: var(--background);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
-    position: relative; /* Needed for particle background stacking */
-    transition: background-color 0.5s ease, color 0.5s ease; /* Smooth theme transition */
-}
-
-/*
-======================================================================
-Layout & Container
-======================================================================
-*/
-.container {
+    position: relative;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  
+  /*
+  ======================================================================
+  Layout & Container
+  ======================================================================
+  */
+  .container {
     max-width: 1400px;
     margin: 2rem auto;
     padding: 0 1rem;
-    position: relative; /* Ensure content is above particles */
+    position: relative;
     z-index: 5;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.dashboard {
+  }
+  
+  .dashboard {
     display: grid;
     grid-template-columns: 1fr 350px; /* Main content + Sidebar */
     gap: 2rem;
-}
-
-/* Skip Link */
-.skip-link {
+  }
+  
+  /* Skip Link for accessibility */
+  .skip-link {
     position: absolute;
     left: -10000px;
     top: auto;
     width: 1px;
     height: 1px;
     overflow: hidden;
-}
-
-.skip-link:focus {
+  }
+  
+  .skip-link:focus {
     position: static;
     width: auto;
     height: auto;
     padding: 0.5em;
     background: var(--accent);
     color: var(--background);
-    z-index: 10001; /* Above everything */
-}
-
-/*
-======================================================================
-Particles Background
-======================================================================
-*/
-#particles-js {
+    z-index: 10001;
+  }
+  
+  /*
+  ======================================================================
+  Particles Background
+  ======================================================================
+  */
+  #particles-js {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 1; /* Behind content */
-    background: linear-gradient(135deg, var(--background) 0%, color-mix(in srgb, var(--background) 80%, black) 100%); /* Use theme background */
-    transition: background 0.5s ease; /* Smooth transition for gradient */
-}
-
-/*
-======================================================================
-Header
-======================================================================
+    z-index: 1;
+    background: linear-gradient(135deg, var(--background) 0%, color-mix(in srgb, var(--background) 80%, black) 100%);
+    transition: background 0.5s ease;
+  }
+  
+  /*
+  ======================================================================
+  Header
+  ======================================================================
+  /* 
+====================================================================== 
+Header Styles
+====================================================================== 
 */
 header {
-    position: relative; /* For z-index stacking */
-    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    padding: 2rem 2rem 1.5rem;
     text-align: center;
-    /* Use theme colors for header gradient */
     background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
     background-size: 200% auto;
-    animation: gradientShift 8s ease infinite;
-    box-shadow: 0 4px 20px var(--shadow-color-header);
-    z-index: 10;
-    transition: background 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-header h1.main-title {
-    font-size: 2.8rem;
+    animation: gradientShift 15s ease infinite;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    transition: all 0.4s ease-out;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  header:hover {
+    background-size: 150% auto;
+  }
+  
+  header h1.main-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
     font-weight: 900;
-    letter-spacing: 2px;
-    text-shadow: 3px 3px var(--shadow-color-dark);
-    margin-bottom: 0.3rem;
-    /* Use theme colors for text gradient */
-    background: linear-gradient(to right, var(--accent), var(--primary));
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-}
-
-header .subtitle {
-    font-size: 1.2rem;
+    text-shadow: 
+      3px 3px 0 rgba(0, 0, 0, 0.2),
+      0 0 10px rgba(255, 255, 255, 0.4);
+    transform: perspective(500px) rotateX(5deg);
+    transition: transform 0.3s ease;
+  }
+  
+  header h1.main-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transform: translateX(-50%);
+    border-radius: 50%;
+  }
+  
+  header h1.main-title:hover {
+    transform: perspective(500px) rotateX(0deg) scale(1.03);
+  }
+  
+  header .subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 500;
     opacity: 0.9;
-    margin-bottom: 1rem;
-}
-
-/*
-======================================================================
-News Ticker
-======================================================================
-*/
-.news-ticker {
-    margin: 0 auto; /* Centered */
-    background: rgba(0,0,0,0.4); /* Keep dark for contrast */
-    padding: 0.6rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: var(--text-light);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* 
+  ====================================================================== 
+  News Ticker
+  ====================================================================== 
+  */
+  .news-ticker {
+    margin: 0.5rem auto 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 0.8rem 1rem;
     overflow: hidden;
     white-space: nowrap;
-    border-radius: 8px;
-    max-width: 1200px;
-    border: 1px solid var(--border-color); /* Use theme border color */
-    transition: border-color 0.5s ease; /* Smooth transition */
-}
-
-.news-ticker-content {
+    border-radius: 12px;
+    max-width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      inset 0 0 15px rgba(0, 0, 0, 0.3),
+      0 5px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .news-ticker:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      inset 0 0 15px rgba(0, 0, 0, 0.3),
+      0 8px 15px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .news-ticker::before {
+    content: '📰 NEWS:';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: var(--accent);
+    z-index: 2;
+    padding-right: 15px;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .news-ticker-content {
     display: inline-block;
-    animation: ticker 120s linear infinite; /* SLOWER Animation Speed */
-    padding-left: 100%; /* Ensures start is off-screen for seamless loop */
-}
-
-.news-ticker-content:hover {
-    animation-play-state: paused; /* Pause on hover */
-}
-
-.news-item {
+    animation: ticker 60s linear infinite;
+    padding-left: 100%;
+    margin-left: 80px; /* Space for the NEWS label */
+  }
+  
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  .news-ticker-content:hover {
+    animation-play-state: paused;
+  }
+  
+  .news-item {
     display: inline-block;
-    margin-right: 3rem;
-    color: var(--text-light); /* Use lighter text color */
+    margin-right: 3.5rem;
+    color: var(--text-light);
     font-size: 1rem;
-}
-
-.news-item.breaking { color: var(--primary); font-weight: 700; } /* Use theme colors */
-.news-item.positive { color: var(--profit); } /* Use theme colors */
-.news-item.negative { color: var(--loss); } /* Use theme colors */
-
-
-/*
-======================================================================
-Market Controls (Search, Sort, Filters, Theme Toggle)
-======================================================================
-*/
-.market-controls {
+    position: relative;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  
+  .news-item::after {
+    content: '•';
+    position: absolute;
+    right: -2rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .news-item:last-child::after {
+    content: '';
+  }
+  
+  .news-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+  
+  .news-item.breaking { 
+    color: var(--primary); 
+    font-weight: 700; 
+    animation: pulse 2s infinite;
+  }
+  
+  .news-item.positive { 
+    color: var(--profit); 
+    font-weight: 600;
+  }
+  
+  .news-item.negative { 
+    color: var(--loss); 
+    font-weight: 600;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    header {
+      padding: 1.5rem 1rem 1rem;
+    }
+    
+    .news-ticker {
+      max-width: 95%;
+      padding: 0.6rem;
+    }
+    
+    .news-ticker::before {
+      display: none;
+    }
+    
+    .news-ticker-content {
+      margin-left: 0;
+    }
+    
+    .news-item {
+      margin-right: 2rem;
+      font-size: 0.9rem;
+    }
+    
+    .news-item::after {
+      right: -1.2rem;
+    }
+  }
+  /*
+  ======================================================================
+  Market Controls
+  ======================================================================
+  */
+  .market-controls {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
     flex-wrap: wrap;
-    align-items: center; /* Align items vertically */
-}
-
-.market-controls .search-box {
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form control groups */
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     flex: 1;
     min-width: 200px;
-}
-
-.market-controls input[type="text"],
-.market-controls select {
+  }
+  
+  .control-group label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Common form control styles */
+  .form-control {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.8rem 1rem;
     border-radius: 8px;
-    border: 1px solid var(--border-color-medium); /* Use theme border color */
-    background: var(--card-bg); /* Use theme card background */
-    color: var(--text); /* Use theme text color */
+    border: 1px solid var(--border-color-medium);
+    background: var(--input-bg, var(--card-bg));
+    color: var(--text);
     font-family: inherit;
     font-size: 1rem;
-    transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
-}
-
-.market-controls .sort-options {
-    min-width: 200px;
-}
-
-.market-controls select {
-    min-width: 200px;
-}
-
-/* Theme Toggle Button */
-.theme-toggle-btn {
-    background: var(--card-bg); /* Use theme card background */
-    color: var(--text); /* Use theme text color */
-    border: 1px solid var(--border-color-medium); /* Use theme border color */
-    padding: 0.6rem; /* Adjust padding */
-    width: 40px; /* Fixed width */
-    height: 40px; /* Fixed height */
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .form-control:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
+  }
+  
+  .form-control:hover:not(:focus) {
+    border-color: var(--border-color-dark);
+  }
+  
+  /* Custom select styling */
+  .custom-select {
+    position: relative;
+  }
+  
+  .custom-select select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+  
+  .custom-select::after {
+    content: "▼";
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: transform 0.2s;
+  }
+  
+  .custom-select:hover::after {
+    color: var(--text);
+  }
+  
+  /* Search bar styling */
+  .search-box {
+    position: relative;
+    flex: 2;
+  }
+  
+  .search-box input {
+    padding-left: 2.5rem;
+  }
+  
+  .search-box::before {
+    content: "🔍";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  
+  .search-box:focus-within::before {
+    opacity: 0.8;
+  }
+  
+  /* Theme toggle button */
+  .theme-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%; /* Make it round */
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color-medium);
+    background: var(--card-bg);
+    color: var(--text);
     cursor: pointer;
-    transition: all 0.3s ease;
-    flex: none; /* Prevent flex-grow */
-}
-
-.theme-toggle-btn:hover {
-    background: color-mix(in srgb, var(--card-bg) 80%, var(--accent)); /* Mix with accent on hover */
-    border-color: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-}
-
-.theme-toggle-btn .icon {
-    font-size: 1.2rem; /* Adjust icon size */
-    line-height: 1;
-}
-
-
-.faction-filters {
+    transition: all 0.2s ease;
+    padding: 0;
+    margin-left: auto;
+  }
+  
+  .theme-toggle-btn:hover {
+    background: var(--bg-hover);
+    transform: scale(1.05);
+  }
+  
+  .theme-toggle-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.3);
+  }
+  
+  
+  /* Faction Filters */
+  .faction-filters {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
     justify-content: center;
     padding: 0.8rem;
-    background: var(--card-bg); /* Use theme card background */
+    background: var(--card-bg);
     border-radius: 15px;
     backdrop-filter: blur(8px);
-    box-shadow: 0 10px 30px var(--shadow-color); /* Use theme shadow color */
-    border: 1px solid var(--border-color); /* Use theme border color */
-    transition: background-color 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease; /* Smooth transition */
-}
-
-.faction-filter {
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.5s, box-shadow 0.5s, border-color 0.5s;
+  }
+  
+  .faction-filter {
     padding: 0.5rem 1rem;
-    background: var(--background); /* Use theme background for filter buttons */
-    border: 1px solid var(--border-color-medium); /* Use theme border color */
+    background: var(--background);
+    border: 1px solid var(--border-color-medium);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--text); /* Use theme text color */
+    color: var(--text);
     font-family: inherit;
     font-size: 0.9rem;
-}
-
-.faction-filter:hover {
-    background: color-mix(in srgb, var(--background) 80%, var(--accent)); /* Mix with accent on hover */
+  }
+  
+  .faction-filter:hover {
+    background: color-mix(in srgb, var(--background) 80%, var(--accent));
     border-color: var(--accent);
     transform: translateY(-2px);
-}
-
-.faction-filter.active {
-    background: var(--accent); /* Use theme accent color */
-    color: var(--background); /* Use theme background color for active text */
+  }
+  
+  .faction-filter.active {
+    background: var(--accent);
+    color: var(--background);
     font-weight: 700;
     border-color: var(--accent);
-}
-
-
-/*
-======================================================================
-Cards (General, Market, Portfolio)
-======================================================================
-*/
-.card {
-    background: var(--card-bg); /* Use theme card background */
+  }
+  
+  /*
+  ======================================================================
+  Cards (General Styling)
+  ======================================================================
+  */
+  .card {
+    background: var(--card-bg);
     border-radius: 15px;
     padding: 1.5rem;
     backdrop-filter: blur(8px);
-    box-shadow: 0 10px 30px var(--shadow-color); /* Use theme shadow color */
-    border: 1px solid var(--border-color); /* Use theme border color */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease; /* Smooth transition */
-}
-
-.card:hover {
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.5s, border-color 0.5s;
+  }
+  
+  .card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--glow-accent); /* Use theme glow color */
-}
-
-.card-header {
+    box-shadow: var(--glow-accent);
+  }
+  
+  .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color-medium); /* Use theme border color */
+    border-bottom: 1px solid var(--border-color-medium);
     flex-wrap: wrap;
     gap: 0.5rem;
-    transition: border-color 0.5s ease; /* Smooth transition */
-}
-
-.card-title {
+    transition: border-color 0.5s;
+  }
+  
+  .card-title {
     font-size: 1.8rem;
     font-weight: 700;
-    /* Use theme colors for title gradient */
     background: linear-gradient(to right, var(--accent), var(--primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     white-space: nowrap;
-}
-
-.stats {
+  }
+  
+  .stats {
     display: flex;
     gap: 1rem;
     align-items: center;
     flex-wrap: wrap;
-}
-
-.stat {
-    background: var(--background); /* Use theme background for stats */
+  }
+  
+  .stat {
+    background: var(--background);
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-weight: 700;
-    box-shadow: inset 0 1px 3px var(--shadow-color); /* Use theme shadow color */
+    box-shadow: inset 0 1px 3px var(--shadow-color);
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-/*
-======================================================================
-Stock Card (Market View)
-======================================================================
-*/
-.stocks-grid {
+    transition: background-color 0.5s, box-shadow 0.5s;
+  }
+  
+  /*
+  ======================================================================
+  Stock Cards (Market View)
+  ======================================================================
+  */
+  .stocks-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.2rem;
-}
-
-.stock-card {
+  }
+  
+  .stock-card {
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--border-color-light); /* Use theme border color */
+    border: 1px solid var(--border-color-light);
     transition: all 0.3s ease;
-    background: var(--card-bg); /* Use theme card background */
+    background: var(--card-bg);
     border-radius: 12px;
     padding: 1.2rem;
     display: flex;
     flex-direction: column;
-    cursor: pointer; /* Indicate interactivity */
-}
-
-.stock-card:hover {
+    cursor: pointer;
+  }
+  
+  .stock-card:hover {
     transform: translateY(-5px);
-    border-color: var(--accent); /* Use theme accent color */
-}
-
-/* Glow effect applied via specific character class */
-
-/* Subtle gradient overlay */
-.stock-card::before {
+    border-color: var(--accent);
+  }
+  
+  /* Subtle gradient overlay */
+  .stock-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    /* Use theme accent color for gradient */
     background: linear-gradient(45deg, transparent 0%, rgba(244, 162, 97, 0.03) 50%, transparent 100%);
     z-index: 0;
     pointer-events: none;
-}
-
-.stock-card > * { /* Ensure content is above pseudo-element */
+  }
+  
+  .stock-card > * {
     position: relative;
     z-index: 1;
-}
-
-.stock-header {
+  }
+  
+  .stock-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.8rem;
-}
-
-.stock-name {
+  }
+  
+  .stock-name {
     font-size: 1.1rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 70%; /* Prevent long names pushing symbol */
-}
-
-.stock-symbol {
-    background: rgba(244,162,97,0.2); /* Use theme accent color */
-    color: var(--accent); /* Use theme accent color */
+    max-width: 70%;
+  }
+  
+  .stock-symbol {
+    background: rgba(244,162,97,0.2);
+    color: var(--accent);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-size: 0.8rem;
     font-weight: 700;
-}
-
-.stock-price {
+  }
+  
+  .stock-price {
     font-size: 1.4rem;
     font-weight: 700;
     margin: 0.5rem 0;
-}
-
-.stock-change {
-    display: inline-block; /* Allow background */
+  }
+  
+  .stock-change {
+    display: inline-block;
     padding: 0.3rem 0.6rem;
     border-radius: 4px;
     font-weight: 700;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
-}
-
-.stock-power {
+  }
+  
+  .stock-power {
     font-size: 0.85rem;
     opacity: 0.8;
     margin: 0.5rem 0;
     line-height: 1.4;
-    min-height: 2.5em; /* Ensure consistent height */
-    flex-grow: 1; /* Allows power section to fill space */
-}
-
-.stock-actions {
+    min-height: 2.5em;
+    flex-grow: 1;
+  }
+  
+  .stock-actions {
     display: flex;
     gap: 0.8rem;
-    margin-top: auto; /* Pushes actions to bottom */
-}
-
-/*
-======================================================================
-Portfolio Section
-======================================================================
-*/
-.portfolio.card {
+    margin-top: auto;
+  }
+  
+  /* Meta Info */
+  .stock-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin: 0.5rem 0;
+    width: 100%;
+    order: 3;
+  }
+  
+  .stock-faction {
+    background: rgba(69, 123, 157, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .stock-volume {
+    font-style: italic;
+  }
+  
+  /*
+  ======================================================================
+  Portfolio Section
+  ======================================================================
+  */
+  .portfolio.card {
     height: fit-content;
     position: sticky;
     top: 2rem;
-    /* Width is determined by the grid column */
-}
-
-.portfolio-value {
+  }
+  
+  .portfolio-value {
     font-size: 2.2rem;
     font-weight: 900;
     text-align: center;
     margin: 0 0 1.5rem 0;
-    /* Use theme colors for gradient */
     background: linear-gradient(to right, var(--accent), var(--primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-}
-
-.portfolio-stats {
+  }
+  
+  .portfolio-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-bottom: 1.5rem;
-}
-
-.portfolio-stat {
-    background: var(--background); /* Use theme background for stats */
+  }
+  
+  .portfolio-stat {
+    background: var(--background);
     padding: 0.8rem;
     border-radius: 8px;
     text-align: center;
-    box-shadow: inset 0 1px 3px var(--shadow-color); /* Use theme shadow color */
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-.stat-label {
+    box-shadow: inset 0 1px 3px var(--shadow-color);
+    transition: background-color 0.5s, box-shadow 0.5s;
+  }
+  
+  .stat-label {
     font-size: 0.8rem;
     opacity: 0.7;
     margin-bottom: 0.3rem;
     display: block;
-}
-
-.stat-value {
+  }
+  
+  .stat-value {
     font-size: 1.1rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.portfolio-list {
-    max-height: 500px; /* Adjust as needed */
+  }
+  
+  .portfolio-list {
+    max-height: 500px;
     overflow-y: auto;
-    padding-right: 0.5rem; /* Space for scrollbar */
-    margin-right: -0.8rem; /* Hide scrollbar visually if needed */
-}
-
-/* Custom Scrollbar for Portfolio */
-.portfolio-list::-webkit-scrollbar { width: 6px; }
-.portfolio-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
-.portfolio-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; } /* Use theme accent */
-.portfolio-list::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, black); } /* Darker accent */
-
-
-.portfolio-item {
+    padding-right: 0.5rem;
+    margin-right: -0.8rem;
+  }
+  
+  /* Custom Scrollbar */
+  .portfolio-list::-webkit-scrollbar { width: 6px; }
+  .portfolio-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
+  .portfolio-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+  .portfolio-list::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, black); }
+  
+  .portfolio-item {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color-light); /* Use theme border color */
+    border-bottom: 1px solid var(--border-color-light);
     flex-wrap: wrap;
     gap: 0.8rem;
-}
-
-.portfolio-item:last-child {
+    animation: portfolioItemEnter 0.3s ease-out forwards;
+  }
+  
+  .portfolio-item:last-child {
     border-bottom: none;
-}
-
-.portfolio-stock {
+  }
+  
+  .portfolio-stock {
     display: flex;
     align-items: flex-start;
     gap: 0.8rem;
     flex: 1;
     min-width: 200px;
-}
-
-.portfolio-stock-icon {
+  }
+  
+  .portfolio-stock-icon {
     width: 40px;
     height: 40px;
     min-width: 40px;
     border-radius: 50%;
-    background: var(--background); /* Use theme background */
-    border: 1px solid var(--border-color-medium); /* Use theme border color */
+    background: var(--background);
+    border: 1px solid var(--border-color-medium);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    box-shadow: 0 2px 6px var(--shadow-color); /* Use theme shadow color */
+    box-shadow: 0 2px 6px var(--shadow-color);
     margin-top: 2px;
-    transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-.portfolio-stock-info {
-    flex: 1; /* Take available space within the stock container */
-    min-width: 0; /* Allow shrinking */
+    transition: background-color 0.5s, border-color 0.5s, box-shadow 0.5s;
+  }
+  
+  .portfolio-stock-info {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-}
-
-.portfolio-stock-power,
-.portfolio-stock-haki,
-.portfolio-stock-bounty {
+  }
+  
+  /* Stock details text styles */
+  .portfolio-stock-name {
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text);
+  }
+  
+  .portfolio-stock-shares {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 0.3rem;
+  }
+  
+  /* Common style for stock attributes */
+  .stock-attribute {
     font-size: 0.8rem;
     line-height: 1.3;
     opacity: 0.85;
@@ -618,364 +869,299 @@ Portfolio Section
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
-}
-
-.portfolio-stock-power {
-    color: var(--accent); /* Use theme accent color */
+  }
+  
+  .portfolio-stock-power {
+    composes: stock-attribute;
+    color: var(--accent);
     font-weight: 500;
-}
-
-.portfolio-stock-haki {
-    color: var(--secondary); /* Use theme secondary color */
-}
-
-.portfolio-stock-bounty {
-    color: var(--profit); /* Use theme profit color */
+  }
+  
+  .portfolio-stock-haki {
+    composes: stock-attribute;
+    color: var(--secondary);
+  }
+  
+  .portfolio-stock-bounty {
+    composes: stock-attribute;
+    color: var(--profit);
     font-weight: 500;
-}
-
-.portfolio-stock-name {
-    font-weight: 700;
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text); /* Use theme text color */
-}
-
-.portfolio-stock-shares {
-    font-size: 0.85rem;
-    opacity: 0.8;
-    margin-bottom: 0.3rem;
-}
-
-/* Meta Info (Faction, Volume) - Added from template structure */
-.stock-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    opacity: 0.7;
-    margin: 0.5rem 0;
-    width: 100%; /* Ensure it takes full width in portfolio item wrap */
-    order: 3; /* Place below stock info and details when wrapped */
-}
-
-.stock-faction {
-    background: rgba(69, 123, 157, 0.2); /* Use theme secondary color */
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-}
-
-.stock-volume {
-    font-style: italic;
-}
-
-.portfolio-stock-details {
+  }
+  
+  .portfolio-stock-details {
     text-align: right;
     min-width: 100px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-}
-
-.portfolio-stock-value {
+  }
+  
+  .portfolio-stock-value {
     font-weight: 700;
     font-size: 1rem;
     white-space: nowrap;
-}
-
-.portfolio-stock-change {
+  }
+  
+  .portfolio-stock-change {
     font-size: 0.85rem;
     font-weight: 600;
-}
-
-/*
-======================================================================
-Modals (General, Quantity, Character Detail, Comparison)
-======================================================================
-*/
-.modal { /* Base modal styles (used by quantity and character) */
+  }
+  
+  /*
+  ======================================================================
+  Modals
+  ======================================================================
+  */
+  .modal {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Keep dark overlay for contrast */
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease 0s; /* Delay visibility transition */
-}
-
-.modal.active { /* Use JS to add/remove 'active' class */
+    transition: opacity 0.3s ease, visibility 0.3s ease 0s;
+  }
+  
+  .modal.active {
     opacity: 1;
     visibility: visible;
-}
-
-.modal-content {
-    background: var(--card-bg); /* Use theme card background */
+  }
+  
+  .modal-content {
+    background: var(--card-bg);
     padding: 2rem;
     border-radius: 15px;
-    border: 1px solid var(--accent); /* Use theme accent color */
-    box-shadow: var(--glow-accent); /* Use theme glow color */
+    border: 1px solid var(--accent);
+    box-shadow: var(--glow-accent);
     position: relative;
     width: 90%;
     transform: translateY(20px);
-    transition: transform 0.3s ease, background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-.modal.active .modal-content {
+    transition: transform 0.3s, background-color 0.5s, border-color 0.5s, box-shadow 0.5s;
+  }
+  
+  .modal.active .modal-content {
     transform: translateY(0);
-}
-
-.close-modal {
+  }
+  
+  .close-modal {
     position: absolute;
     top: 1rem; right: 1rem;
     font-size: 2rem;
     line-height: 1;
     cursor: pointer;
-    color: var(--text-light); /* Use theme lighter text color */
+    color: var(--text-light);
     transition: color 0.2s;
     background: none;
     border: none;
-}
-
-.close-modal:hover {
-    color: var(--accent); /* Use theme accent color */
-}
-
-/* Quantity Modal Specifics */
-#quantity-modal .modal-content {
+  }
+  
+  .close-modal:hover {
+    color: var(--accent);
+  }
+  
+  /* Quantity Modal */
+  #quantity-modal .modal-content {
     max-width: 400px;
-}
-
-#quantity-modal h3 {
+  }
+  
+  #quantity-modal h3 {
     margin-bottom: 1rem;
-    color: var(--accent); /* Use theme accent color */
+    color: var(--accent);
     font-size: 1.5rem;
-}
-
-#quantity-modal #modal-character-info {
+  }
+  
+  #quantity-modal #modal-character-info {
     margin-bottom: 1rem;
     font-size: 1rem;
     opacity: 0.9;
-}
-
-#quantity-modal .quantity-selector {
+  }
+  
+  #quantity-modal .quantity-selector {
     margin: 1rem 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-#quantity-modal label {
+  }
+  
+  #quantity-modal label {
     font-weight: 500;
-}
-
-#quantity-modal input[type="number"] {
+  }
+  
+  #quantity-modal input[type="number"] {
     flex-grow: 1;
     padding: 0.8rem;
     border-radius: 8px;
-    border: 1px solid var(--border-color-medium); /* Use theme border color */
-    background: var(--background); /* Use theme background */
-    color: var(--text); /* Use theme text color */
+    border: 1px solid var(--border-color-medium);
+    background: var(--background);
+    color: var(--text);
     font-family: inherit;
     font-size: 1rem;
-    transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
-}
-
-#quantity-modal .modal-actions {
+    transition: border-color 0.5s, background-color 0.5s, color 0.5s;
+  }
+  
+  #quantity-modal .modal-actions {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
     margin-top: 1.5rem;
-}
-
-/* Avoid !important for modal buttons */
-#quantity-modal .btn.btn-cancel {
-    background: transparent;
-    border: 1px solid var(--accent); /* Use theme accent color */
-    color: var(--accent); /* Use theme accent color */
-}
-
-#quantity-modal .btn.btn-cancel:hover {
-    background: color-mix(in srgb, transparent 80%, var(--accent)); /* Mix with accent */
-}
-
-#quantity-modal .btn.btn-confirm {
-    background: var(--accent); /* Use theme accent color */
-    color: var(--background); /* Use theme background color */
-    border: 1px solid var(--accent); /* Use theme accent color */
-}
-
-#quantity-modal .btn.btn-confirm:hover {
-    background: color-mix(in srgb, var(--accent) 80%, black); /* Darker accent */
-    border-color: color-mix(in srgb, var(--accent) 80%, black);
-}
-
-/* Character Detail Modal Specifics */
-.character-modal .modal-content { /* Use class from JS */
+  }
+  
+  /* Character Detail Modal */
+  .character-modal .modal-content {
     max-width: 800px;
     max-height: 90vh;
     overflow-y: auto;
-    /* Custom Scrollbar */
     scrollbar-width: thin;
-    scrollbar-color: var(--accent) rgba(0,0,0,0.1); /* Use theme accent */
-}
-
-.character-modal .modal-content::-webkit-scrollbar { width: 6px; }
-.character-modal .modal-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
-.character-modal .modal-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; } /* Use theme accent */
-.character-modal .modal-content::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, black); } /* Darker accent */
-
-
-.modal-header {
+    scrollbar-color: var(--accent) rgba(0,0,0,0.1);
+  }
+  
+  .character-modal .modal-content::-webkit-scrollbar { width: 6px; }
+  .character-modal .modal-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px;}
+  .character-modal .modal-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+  .character-modal .modal-content::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, black); }
+  
+  .modal-header {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color-medium); /* Use theme border color */
-    transition: border-color 0.5s ease; /* Smooth transition */
-}
-
-.modal-header h2 {
+    border-bottom: 1px solid var(--border-color-medium);
+    transition: border-color 0.5s;
+  }
+  
+  .modal-header h2 {
     font-size: 1.8rem;
-    color: var(--accent); /* Use theme accent color */
+    color: var(--accent);
     margin-bottom: 0.25rem;
-}
-
-.modal-faction {
+  }
+  
+  .modal-faction {
     font-size: 1rem;
     opacity: 0.8;
-}
-
-.modal-body {
+  }
+  
+  .modal-body {
     display: grid;
-    grid-template-columns: 100px 1fr; /* Icon | Stats/Desc/Chart */
+    grid-template-columns: 100px 1fr;
     gap: 2rem;
-}
-
-.modal-icon {
+  }
+  
+  .modal-icon {
     font-size: 5rem;
     text-align: center;
     line-height: 1;
     margin-top: 1rem;
-}
-
-.modal-stats div {
+  }
+  
+  .modal-stats div {
     margin-bottom: 0.8rem;
     font-size: 1rem;
-}
-
-.modal-stats span.positive,
-.modal-stats span.negative {
+  }
+  
+  .modal-stats span.positive,
+  .modal-stats span.negative {
     font-weight: 700;
-}
-
-.modal-power {
+  }
+  
+  .modal-power {
     font-style: italic;
     margin: 1rem 0;
-    color: var(--accent); /* Use theme accent color */
+    color: var(--accent);
     font-size: 1.1rem;
-}
-
-.modal-description {
+  }
+  
+  .modal-description {
     line-height: 1.5;
     opacity: 0.9;
     margin-bottom: 1.5rem;
-}
-
-.modal-chart {
-    grid-column: span 2; /* Span across both columns */
-    height: 300px; /* Fixed height for chart */
+  }
+  
+  .modal-chart {
+    grid-column: span 2;
+    height: 300px;
     margin-top: 1rem;
-    position: relative; /* For Chart.js canvas */
-}
-
-.modal-chart canvas {
+    position: relative;
+  }
+  
+  .modal-chart canvas {
     max-height: 100%;
-}
-
-
-/*
-======================================================================
-Comparison Modal
-======================================================================
-*/
-.comparison-modal .modal-content {
+  }
+  
+  /* Comparison Modal */
+  .comparison-modal .modal-content {
     max-width: 900px;
     padding: 2rem;
-}
-
-.comparison-body {
+  }
+  
+  .comparison-body {
     display: grid;
     grid-template-columns: 120px 1fr 120px;
     gap: 1.5rem;
     align-items: center;
     margin: 2rem 0;
-}
-
-.character-info {
+  }
+  
+  .character-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    text-align: center; /* Center text within info block */
-}
-
-.comparison-icon {
+    text-align: center;
+  }
+  
+  .comparison-icon {
     font-size: 4rem;
     line-height: 1;
-}
-
-.comparison-stats {
+  }
+  
+  .comparison-stats {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     font-size: 0.9rem;
-}
-
-.comparison-stats strong {
+  }
+  
+  .comparison-stats strong {
     font-weight: 700;
-}
-
-
-.chart-container {
+  }
+  
+  .chart-container {
     height: 300px;
     position: relative;
-}
-
-.comparison-metrics {
+  }
+  
+  .comparison-metrics {
     display: flex;
     justify-content: center;
     gap: 3rem;
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--border-color); /* Use theme border color */
-    transition: border-color 0.5s ease; /* Smooth transition */
-}
-
-.metric {
-    background: var(--background); /* Use theme background */
+    border-top: 1px solid var(--border-color);
+    transition: border-color 0.5s;
+  }
+  
+  .metric {
+    background: var(--background);
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
     text-align: center;
-    box-shadow: inset 0 1px 3px var(--shadow-color); /* Use theme shadow color */
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-}
-
-.metric span {
+    box-shadow: inset 0 1px 3px var(--shadow-color);
+    transition: background-color 0.5s, box-shadow 0.5s;
+  }
+  
+  .metric span {
     display: block;
     font-size: 0.9rem;
     opacity: 0.8;
     margin-bottom: 0.3rem;
-}
-
-.metric strong {
+  }
+  
+  .metric strong {
     font-size: 1.2rem;
-}
-
-
+  }
 /*
 ======================================================================
 Loading Screen
@@ -1435,3 +1621,19 @@ Media Queries (Responsiveness)
         font-size: 0.8rem; /* Smaller stats text */
     }
 }
+@media (max-width: 768px) {
+    .market-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    
+    .theme-toggle-btn {
+      align-self: flex-end;
+      margin-top: 0.5rem;
+    }
+    
+    .control-group {
+      min-width: unset;
+    }
+  }

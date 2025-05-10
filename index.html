@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="V3-One-Piece.css">
+    <link rel="stylesheet" href="styles.css">
 
     <style>
         .visually-hidden {
@@ -66,13 +66,25 @@
 
         <section class="market-controls" aria-labelledby="market-controls-heading">
             <h2 id="market-controls-heading" class="visually-hidden">Market Controls</h2>
-            <div class="search-box">
+            
+            <div class="control-group search-box">
                 <label for="search-input">Search Characters</label>
-                <input type="text" id="search-input" placeholder="Search characters..." aria-label="Search characters by name, symbol, or faction">
+                <input 
+                    type="search" 
+                    id="search-input" 
+                    class="form-control" 
+                    placeholder="Search characters..." 
+                    aria-label="Search characters by name, symbol, or faction"
+                >
             </div>
-            <div class="sort-options">
+            
+            <div class="control-group custom-select">
                 <label for="sort-select">Sort Characters By</label>
-                <select id="sort-select" aria-label="Sort characters by">
+                <select 
+                    id="sort-select" 
+                    class="form-control" 
+                    aria-label="Sort characters by"
+                >
                     <option value="price-desc">Price (High to Low)</option>
                     <option value="price-asc">Price (Low to High)</option>
                     <option value="change-desc">Change % (High to Low)</option>
@@ -81,8 +93,15 @@
                     <option value="name-desc">Name (Z-A)</option>
                 </select>
             </div>
-            <button id="theme-toggle" class="btn theme-toggle-btn" aria-label="Toggle light and dark mode">
-                <span class="icon">☀️</span> </button>
+            
+            <button 
+                id="theme-toggle" 
+                class="theme-toggle-btn" 
+                aria-label="Toggle light and dark mode"
+                title="Toggle theme"
+            >
+                <span class="icon" aria-hidden="true">☀️</span>
+            </button>
         </section>
 
         <div class="dashboard">
